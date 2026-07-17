@@ -19,9 +19,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nom',
+        'prenom',
         'email',
         'password',
+        'telephone',
+        'role',
     ];
 
     /**
@@ -45,5 +48,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    //un User peut être lié à un Artisan OU un Client (selon son rôle)
+    public function artisan()
+    {
+        return $this->hasOne(Artisan::class);
+    }
+
+    public function client()
+    {
+        return $this->hasOne(Client::class);
     }
 }
