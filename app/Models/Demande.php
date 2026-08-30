@@ -9,13 +9,13 @@ class Demande extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'client_id',
-        'artisan_id',
-        'canal_contact',
-        'statut_client',
-        'statut_artisan',
-    ];
+   protected $fillable = [
+    'client_id',
+    'artisan_id',
+    'contact_canal',
+    'statut_client',
+    'statut_artisan',
+];
 
     public function client()
     {

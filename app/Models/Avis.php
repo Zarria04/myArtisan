@@ -9,7 +9,7 @@ class Avis extends Model
 {
     use HasFactory;
 
-    protected $table = 'avis';     // Important : "avis" est identique au singulier et au pluriel en français
+    protected $table = 'avis';     
 
     protected $fillable = [
         'demande_id',

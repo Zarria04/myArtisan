@@ -34,6 +34,6 @@ class Artisan extends Model
 
     public function demandes()
     {
-        return $this->hasMany(Demandes::class);
+        return $this->hasMany(Demande::class);
     }
 }
