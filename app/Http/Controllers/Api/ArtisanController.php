@@ -39,7 +39,8 @@ class ArtisanController extends Controller
     }
 
     // Récupérer les avis reçus par cet artisan (auteur='client', via les demandes liées)
-    $avis = Avis::whereHas('demande', function ($query) use ($artisan) {
+        $avis = Avis::with('demande.client.user')
+    ->whereHas('demande', function ($query) use ($artisan) {
         $query->where('artisan_id', $artisan->id);
     })
     ->where('auteur', 'client')
