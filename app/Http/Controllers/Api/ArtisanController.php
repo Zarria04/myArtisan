@@ -11,24 +11,34 @@ class ArtisanController extends Controller
 {
     // Recherche d'artisans
     public function search(Request $request)
-    {
-        $query = Artisan::with('user'); // pour avoir nom, prenom, telephone
+{
+    $query = Artisan::with('user');
 
-        if ($request->filled('ville')) {
-            $query->where('ville', 'like', '%' . $request->ville . '%');
-        }
-
-        if ($request->filled('secteur_activite')) {
-            $query->where('secteur_activite', 'like', '%' . $request->secteur_activite . '%');
-        }
-
-        $artisans = $query->get();
-
-        return response()->json([
-            'count' => $artisans->count(),
-            'artisans' => $artisans,
-        ], 200);
+    if ($request->filled('ville')) {
+        $query->where('ville', 'like', '%' . $request->ville . '%');
     }
+
+    if ($request->filled('secteur_activite')) {
+        $query->where('secteur_activite', 'like', '%' . $request->secteur_activite . '%');
+    }
+
+    $artisans = $query->get();
+
+    $artisans->each(function ($artisan) {
+        $noteMoyenne = \App\Models\Avis::whereHas('demande', function ($q) use ($artisan) {
+            $q->where('artisan_id', $artisan->id);
+        })
+        ->where('auteur', 'client')
+        ->avg('note');
+
+        $artisan->note_moyenne = $noteMoyenne ? round($noteMoyenne, 1) : null;
+    });
+
+    return response()->json([
+        'count' => $artisans->count(),
+        'artisans' => $artisans,
+    ], 200);
+}
 
     public function show($id)
 {
